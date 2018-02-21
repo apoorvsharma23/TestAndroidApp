@@ -25,7 +25,7 @@ dependencies:
 
 test:
   override:
-    - ./gradlew assembleDebug -PdisablePreDex
+    - ./gradlew TestTask -PdisablePreDex
 
 deployment:
   espresso:

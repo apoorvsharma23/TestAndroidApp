@@ -1,7 +1,8 @@
 general:
   build_dir: /AndroidDemo/
   artifacts:
-    - "app/build/reports/androidTests/connected"
+    - /home/ubuntu/Calculator/app/build/outputs/apk/
+    #- "app/build/reports/androidTests/connected"
 
 machine:
   java:
@@ -11,8 +12,9 @@ machine:
   environment:
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
     TEST_FLAGS: "--configure-on-demand -PdisablePreDex"
-    TERM: "dumb"
     ADB_INSTALL_TIMEOUT: "10"
+    ANDROID_HOME: /usr/local/android-sdk-linux
+
 
 dependencies:
   pre:
@@ -24,9 +26,14 @@ dependencies:
     - /usr/local/android-sdk-linux/platforms/android-25
     - /usr/local/android-sdk-linux/extras/android/m2repository
 
+  override:
+        - chmod +x gradlew
+        - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
+
+
 test:
   override:
-    - gradlew assemble
+    - (./gradlew assemble)
 
 deployment:
   espresso:

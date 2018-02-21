@@ -1,4 +1,5 @@
 general:
+  build_dir: /AndroidDemo/
   artifacts:
     - "app/build/reports/androidTests/connected"
 
@@ -25,7 +26,7 @@ machine:
 
 test:
   override:
-    - AndroidDemo/gradlew assemble
+    - gradlew assemble
 
 #deployment:
 #  espresso:

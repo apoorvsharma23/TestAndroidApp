@@ -1,0 +1,26 @@
+machine:
+  environment:
+    _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+    GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
+    
+  compile:
+  override:
+    - ./gradlew :app:assembleDebug :app:lintDebug
+  post:
+    #publish lint artifacts
+    - mkdir -p $CIRCLE_ARTIFACTS/lint
+    - mkdir -p $CIRCLE_ARTIFACTS/apk
+    - mv app/build/outputs/lint* $CIRCLE_ARTIFACTS/lint
+    - mv app/build/outputs/apk/* $CIRCLE_ARTIFACTS/apk
+    
+    dependencies:
+  pre:
+    # Android SDK Build-tools, revision 25.0.2
+    - if [ ! -d "/usr/local/android-sdk-linux/build-tools/25.0.2" ]; then echo y | android update sdk --no-ui --all --filter "build-tools-25.0.2"; fi
+    - echo y | android update sdk --no-ui --all --filter "extra-google-m2repository"
+  cache_directories:
+    - ~/.gradle
+    - /usr/local/android-sdk-linux/platforms/android-25
+    - /usr/local/android-sdk-linux/build-tools/25.0.2
+    - /usr/local/android-sdk-linux/tools
+    - /usr/local/android-sdk-linux/extras/android/m2repository

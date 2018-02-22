@@ -59,7 +59,8 @@ deployment:
       - sleep 30
       - adb shell input keyevent 82
       # run tests  against the emulator.
-      - (./gradlew connectedDevelopmentDebugAndroidTest -PdisablePreDex)
+#      - (./gradlew connectedDevelopmentDebugAndroidTest -PdisablePreDex)
+      $ adb shell am instrument -w com.mytaxi.android_demo.activities/android.support.test.runner.AndroidJUnitRunner
       # gradlew connectedAndroidTest -PdisablePreDex
       # copy the build outputs to artifacts
       - cp -r app/build/outputs $CIRCLE_ARTIFACTS

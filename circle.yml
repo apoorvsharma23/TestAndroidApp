@@ -1,7 +1,7 @@
 general:
   build_dir: /AndroidDemo/
   artifacts:
-    - /home/ubuntu/Calculator/app/build/outputs/apk/
+    - /home/ubuntu/AndroidDemo/app/build/outputs/apk/
     #- "app/build/reports/androidTests/connected"
 
 machine:

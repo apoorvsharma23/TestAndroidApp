@@ -2,7 +2,6 @@ general:
   build_dir: /AndroidDemo/
   artifacts:
     - /home/ubuntu/AndroidDemo/app/build/outputs/apk/
-    #- "app/build/reports/androidTests/connected"
 
 machine:
   java:
@@ -18,24 +17,17 @@ machine:
 
 dependencies:
   pre:
-    # Android SDK Platform 25
+    # Android SDK Platform 26
     - if [ ! -d "/usr/local/android-sdk-linux/platforms/android-26" ]; then echo y | android update sdk --no-ui --all --filter "android-26"; fi
-    # Android SDK Build-tools, revision 25.0.0
+    # Android SDK Build-tools, revision 26.0.2
     - if [ ! -d "/usr/local/android-sdk-linux/build-tools/26.0.2" ]; then echo y | android update sdk --no-ui --all --filter "build-tools-26.0.2"; fi
     # Android Support Repository, revision 39 / Local Maven repository for Support Libraries
     - if [ ! -d "/usr/local/android-sdk-linux/extras/android/m2repository/com/android/support/design/26.0.2" ]; then echo y | android update sdk --no-ui --all --filter "extra-android-m2repository"; fi  
-   # - if [ ! -e /usr/local/android-sdk-linux/build-tools/25.0.2 ]; then echo y | android update sdk --all --no-ui --filter "build-tools-25.0.0"; fi;
-   # - if [ ! -e /usr/local/android-sdk-linux/platforms/android-25 ]; then echo y | android update sdk --all --no-ui --filter "android-25"; fi;
-   # - if ! $(grep -q "Revision=44.0.0" /usr/local/android-sdk-linux/extras/android/m2repository/source.properties); then echo y | android update sdk --all --no-ui --filter "extra-android-m2repository"; fi;
+   
   cache_directories:
-    - /usr/local/android-sdk-linux/platforms/android-25
+    - /usr/local/android-sdk-linux/platforms/android-26
     - /usr/local/android-sdk-linux/build-tools/26.0.2
     - /usr/local/android-sdk-linux/extras/android/m2repository
-
-
-    #- /usr/local/android-sdk-linux/build-tools/25.0.2
-    #- /usr/local/android-sdk-linux/platforms/android-25
-    #- /usr/local/android-sdk-linux/extras/android/m2repository
 
   override:
         - chmod +x gradlew
@@ -57,10 +49,10 @@ deployment:
       - sleep 30
       - adb shell input keyevent 82
       # run tests  against the emulator.
-#      - (./gradlew connectedDevelopmentDebugAndroidTest -PdisablePreDex)
-      - adb shell am instrument -w com.mytaxi.android_demo/android.support.test.runner.AndroidJUnitRunner
+      - (./gradlew connectedAndroidTest -PdisablePreDex)
+#      - adb shell am instrument -w com.mytaxi.android_demo/android.support.test.runner.AndroidJUnitRunner
       # gradlew connectedAndroidTest -PdisablePreDex
       # copy the build outputs to artifacts
-      - cp -r app/build/outputs $CIRCLE_ARTIFACTS
+#      - cp -r app/build/outputs $CIRCLE_ARTIFACTS
       # copy the test results to the test results directory.
-      - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
+#      - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
